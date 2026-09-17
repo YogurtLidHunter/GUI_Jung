@@ -1,6 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QLineEdit
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap
 
 def on_click():
     mes = le1.text()
@@ -11,7 +12,6 @@ def on_click():
 
 def on_click_clear():
     w2.hide()
-
 
 app = QApplication(sys.argv)
 
@@ -46,14 +46,20 @@ b2.clicked.connect(on_click_clear)
 
 w2 = QWidget()
 w2.setWindowTitle("w2")
-w2.setStyleSheet("background-color: red")
+w2.setStyleSheet("background-color: white")
 
 lb2 = QLabel(" ", w2)
 lb2.resize(400, 100)
 lb2.setAlignment(Qt.AlignmentFlag.AlignCenter)
 lb2.setStyleSheet("font-size: 18px; padding: 5px; font-weight: bold; border: 2px solid green; border-radius: 10px;")
 
-w1.show()
+pixmap = QPixmap("GUI-Programming/assets/image.png")
+im_lb = QLabel(w2)
+im_lb.setPixmap(pixmap)
+im_lb.setScaledContents(True)
+im_lb.resize(200,200)
+im_lb.move(100, 100)
 
+w1.show()
 
 sys.exit(app.exec_())
