@@ -51,12 +51,14 @@ class StudentCardApp(QWidget):
         self.btn_issue.resize(120, 35)
         self.btn_issue.move(95, 150)
         # TODO 2: btn_issue 클릭 시 on_click_issue 메서드 연결
+        self.btn_issue.clicked.connect(self.on_click_issue)
 
         # 초기화 버튼
         self.btn_clear = QPushButton("초기화", self)
         self.btn_clear.resize(120, 35)
         self.btn_clear.move(235, 150)
         # TODO 3: btn_clear 클릭 시 on_click_clear 메서드 연결
+        self.btn_clear.clicked.connect(self.on_click_clear)
 
         # 사진 표시 라벨
         self.lbl_photo = QLabel(self)
@@ -75,16 +77,39 @@ class StudentCardApp(QWidget):
         student_id = self.le_id.text().strip()
 
         # TODO 4: 입력 검증 (이름이 비어있거나 학번이 8자리 숫자가 아닌 경우 오류 처리)
+        if not name or not student_id.isdigit() or len(student_id) != 8:
+            self.lbl_status.setText("오류")
+            return
 
         # TODO 5: 학번 앞 4자리로 입학년도 추출
+        en_year = student_id[:4]
 
         # TODO 6: 학번 8자리 숫자의 각 자릿수 합(체크섬) 계산
+        checksum = sum(int(digit) for digit in student_id)
 
         # TODO 7: 학번 끝자리의 홀수/짝수 여부에 따라 등급 구분 ('BLUE 등급' 또는 'GOLD 등급')
+        last_num = int(student_id[-1])
+        grade = "GOLD 등급" if last_num % 2 == 0 else "BLUE 등급"
 
         # TODO 8: 결과 안내 문구 표시 및 profile.png 이미지를 QPixmap으로 로드하여 lbl_photo.show()
+        self.lbl_status.setText("학생증 발급이 완료되었습니다.")
+        self.lbl_info.setText(f"이름: {name} | 입학년도: {en_year} | 등급: {grade} | 체크섬: {checksum}")
+        pm = QPixmap(str(self.img_path))
+        self.lbl_photo.setGeometry(150, 200, 150, 150)
+        self.lbl_photo.setPixmap(pm)
+        self.lbl_photo.setScaledContents(True)
+        self.lbl_photo.show()
 
     def on_click_clear(self):
         # TODO 9: 입력창 지우기, 라벨 초기화, 사진 hide()
-        pass
+        self.le_name.clear()
+        self.le_id.clear()
+        self.lbl_status.setText("이름과 학번을 입력한 후 발급 버튼을 누르세요.")
+        self.lbl_info.clear()
+        self.lbl_photo.clear()
 
+app = QApplication(sys.argv)
+w = StudentCardApp()
+w.show()
+
+sys.exit(app.exec_())
