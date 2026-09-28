@@ -6,14 +6,20 @@ from PyQt5.QtGui import QPixmap
 
 # ==============================================================================
 # [과제 1 자기 설명 및 AI 사용 명시]
-# 학번:
-# 이름:
+# 학번: 2025111423
+# 이름: 변정수
 # Q1. State -> Event -> Action -> Update -> Feedback 설명:
-#
+# 1. State: 프로그램이 유지하는 데이터
+# 2. Event: 사용자가 발생시킨 사건
+# 3. Action: 연결된 함수 실행
+# 4. Update: 내부 데이터와 상태 변경
+# 5. Feedback: 사용자에게 보여주는 결과
+# - 이 과정은 사용자가 무언가의 이벤트 취하는 순간 프로그램이 동작하고 업데이트되어 사용자에게 보여지는 과정이다.
+
 # Q2. 학번 인증코드 계산 로직 설명:
-#
+# - 학번의 모든 숫자를 리스트로 모아서 sum 함수를 사용하여 더했다.
 # Q3. AI 도구 사용 여부 및 수정 내용:
-#
+# - 코드의 간결화를 위해 checksum을 구하는 과정에서 리스트 컴프리헨션 로직을 ai에게 물어보았다.
 # ==============================================================================
 
 class StudentCardApp(QWidget):
@@ -25,7 +31,7 @@ class StudentCardApp(QWidget):
 
     def init_ui(self):
         # TODO 1: 윈도우 제목 설정 ("[학번] [이름] - 스마트 학생증 발급기") 및 창 크기 고정 (450 x 420)
-        self.setWindowTitle("스마트 학생증 발급기")
+        self.setWindowTitle("[학번] [이름] - 스마트 학생증 발급기")
         self.setFixedSize(450, 420)
 
         # 상태 안내 라벨
@@ -85,18 +91,18 @@ class StudentCardApp(QWidget):
         en_year = student_id[:4]
 
         # TODO 6: 학번 8자리 숫자의 각 자릿수 합(체크섬) 계산
-        checksum = sum(int(digit) for digit in student_id)
+        checksum = sum([int(i) for i in student_id])
 
         # TODO 7: 학번 끝자리의 홀수/짝수 여부에 따라 등급 구분 ('BLUE 등급' 또는 'GOLD 등급')
         last_num = int(student_id[-1])
         grade = "GOLD 등급" if last_num % 2 == 0 else "BLUE 등급"
 
         # TODO 8: 결과 안내 문구 표시 및 profile.png 이미지를 QPixmap으로 로드하여 lbl_photo.show()
-        self.lbl_status.setText("학생증 발급이 완료되었습니다.")
-        self.lbl_info.setText(f"이름: {name} | 입학년도: {en_year} | 등급: {grade} | 체크섬: {checksum}")
-        pm = QPixmap(str(self.img_path))
+        self.lbl_status.setText(f"{name} 학생 ({en_year}학번) 발급 완료! [인증코드: {checksum}]")
+        self.lbl_info.setText(f"이름: {name} | 학번: {student_id} | 등급: {grade}")
+        pmap = QPixmap(str(self.img_path))
         self.lbl_photo.setGeometry(150, 200, 150, 150)
-        self.lbl_photo.setPixmap(pm)
+        self.lbl_photo.setPixmap(pmap)
         self.lbl_photo.setScaledContents(True)
         self.lbl_photo.show()
 
@@ -106,7 +112,7 @@ class StudentCardApp(QWidget):
         self.le_id.clear()
         self.lbl_status.setText("이름과 학번을 입력한 후 발급 버튼을 누르세요.")
         self.lbl_info.clear()
-        self.lbl_photo.clear()
+        self.lbl_photo.hide()
 
 app = QApplication(sys.argv)
 w = StudentCardApp()
