@@ -13,22 +13,27 @@ class startWindow(QWidget):
         self.setWindowTitle("QTextEdit and QLineEdit")
         self.setFixedSize(500, 260)
 
-        self.text_label = QLabel("QTextEdit", self)
+        self.text_label = QLabel("Username", self)
         self.text_label.move(20, 20)
 
         self.text_edit = QTextEdit(self)
-        self.text_edit.setPlaceholderText("Edit Text Here")
+        self.text_edit.setPlaceholderText("Username Here")
         self.text_edit.setGeometry(20, 50, 220, 40)
-        self.line_label = QLabel("QLineEdit", self)
+        self.line_label = QLabel("password", self)
         self.line_label.move(260, 20)
 
         self.line_edit = QLineEdit(self)
-        self.line_edit.setPlaceholderText("Line Edit Here")
+        self.line_edit.setPlaceholderText("password Here")
         self.line_edit.setGeometry(260, 50, 220, 40)
+
+        self.line_edit.returnPressed.connect(lambda: self.on_click('line_edit'))
+        self.line_edit.textChanged.connect(lambda: self.on_click('line_edit'))
+        self.line_edit.setEchoMode(QLineEdit.PasswordEchoOnEdit)
+        self.line_edit.setInputMask("0000-00-00:?")
 
         self.button = QPushButton("Enter", self)
         self.button.setGeometry(200, 100, 100, 30)
-        self.button.clicked.connect(lambda: self.on_click('line_edit'))
+        self.button.clicked.connect(lambda: self.on_click('text_edit'))
 
         self.reslt_label = QLabel("Result", self)
         self.reslt_label.setGeometry(20, 140, 460, 100)
@@ -36,9 +41,9 @@ class startWindow(QWidget):
     
     def on_click(self, caller):
         if caller =='text_edit':
-            self.reslt_label.setText(f"QTextEdit: {self.text_edit.toPlainText()}")
+            self.reslt_label.setText(f"Username: {self.text_edit.toPlainText()}")
         elif caller =='line_edit':
-            self.reslt_label.setText(f"QLineEdit: {self.line_edit.text()}")
+            self.reslt_label.setText(f"{self.text_edit.toPlainText()}: {self.line_edit.text()}")
         self.reslt_label.show()
 
 
