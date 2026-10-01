@@ -27,9 +27,9 @@ class startWindow(QWidget):
         self.line_edit.setGeometry(260, 50, 220, 40)
 
         self.line_edit.returnPressed.connect(lambda: self.on_click('line_edit'))
-        self.line_edit.textChanged.connect(lambda: self.on_click('line_edit'))
+        # self.line_edit.textChanged.connect(lambda: self.on_click('line_edit'))
         self.line_edit.setEchoMode(QLineEdit.PasswordEchoOnEdit)
-        self.line_edit.setInputMask("0000-00-00:?")
+        self.line_edit.setInputMask("0000-00-00:_")
 
         self.button = QPushButton("Enter", self)
         self.button.setGeometry(200, 100, 100, 30)
