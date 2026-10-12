@@ -1,11 +1,13 @@
 import sys
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QLabel)
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTime
 
 class startWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_ui()
+
+        self.start_time = None
 
     def init_ui(self):
         self.setGeometry(100, 100, 300, 200)
@@ -16,6 +18,10 @@ class startWindow(QMainWindow):
         self.show()
 
     def mousePressEvent(self, event):
+        if self.start_time is None:
+            print("pressed! Starting timer")
+            self.start_time = QTime.currentTime()
+
         # 어떤 버튼이 눌렸는지 확인
         if event.button() == Qt.MouseButton.LeftButton:
             button = "Left"
@@ -30,7 +36,12 @@ class startWindow(QMainWindow):
         self.label.setText(f"<p><b>{button}</b> button pressed at ({x}, {y})</p>")
 
     def mouseReleaseEvent(self, event):
-        print("Mouse button released")
+        if self.start_time is not None:
+            current_time = QTime.currentTime()
+            elapsed_time = self.start_time.msecsTo(current_time)
+            print(f"ESC key released after {elapsed_time / 1000:.2f} seconds. Not closing.")
+            self.start_time = None
+            
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

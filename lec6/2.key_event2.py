@@ -27,6 +27,8 @@ class startWindow(QMainWindow):
 
     def keyReleaseEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
+            if event.isAutoRepeat():
+                return
             if self.start_time is not None:
                 current_time = QTime.currentTime()
                 # "current time - start_time"직접 사용할수 없습니다, msecsTo 를 사용하시오
