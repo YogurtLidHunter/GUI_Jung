@@ -6,6 +6,7 @@ class startWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_ui()
+        self.count = 0
 
     def init_ui(self):
         self.setGeometry(100, 100, 300, 200)
@@ -21,12 +22,14 @@ class startWindow(QMainWindow):
             self, "Quit", "Are you sure you want to quit?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No)
-        if answer == QMessageBox.StandardButton.Yes:
-            print("Closing the window.")
-            event.accept()   # 닫기 진행
+        if self.count < 2:
+            if answer == QMessageBox.StandardButton.Yes:
+                event.ignore()
+                self.count += 1
+            else:
+                event.ignore()   # 닫기 취소
         else:
-            print("Close cancelled.")
-            event.ignore()   # 닫기 취소
+            event.accept()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
